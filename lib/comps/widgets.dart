@@ -3,29 +3,14 @@ import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:flutterfire_ui/auth.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:project/comps/animated-dialog.dart';
+import 'package:project/comps/animated_dialog.dart';
 import 'package:project/comps/styles.dart';
 import 'package:project/profile_page.dart';
 
 import '../groupspage.dart';
 
 class ChatWidgets {
-  static Map<String, String> _profilePictureCache = {};
-
-  static Future<String> _fetchProfilePictureUrl(String userId) async {
-    if (!_profilePictureCache.containsKey(userId)) {
-      DocumentSnapshot<Map<String, dynamic>> snapshot = await FirebaseFirestore
-          .instance
-          .collection('Users')
-          .doc(userId)
-          .get();
-      _profilePictureCache[userId] = snapshot.data()!['profile_picture'];
-    }
-    return _profilePictureCache[userId]!;
-  }
-
   static Widget card({title, time, subtitle, onTap, String imageUrl = ''}) {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 3.0),
@@ -35,13 +20,13 @@ class ChatWidgets {
           onTap: onTap,
           contentPadding: const EdgeInsets.all(5),
           leading: Padding(
-            padding: EdgeInsets.all(0.0),
+            padding: const EdgeInsets.all(0.0),
             child: CircleAvatar(
               radius: 25,
               backgroundImage:
                   imageUrl.isNotEmpty ? NetworkImage(imageUrl) : null,
               child: imageUrl.isEmpty
-                  ? Icon(
+                  ? const Icon(
                       Icons.person,
                       size: 40,
                       color: Colors.white,
@@ -74,7 +59,7 @@ class ChatWidgets {
               backgroundImage:
                   imageUrl.isNotEmpty ? NetworkImage(imageUrl) : null,
               child: imageUrl.isEmpty
-                  ? Icon(
+                  ? const Icon(
                       Icons.person,
                       size: 40,
                       color: Colors.white,
@@ -86,8 +71,8 @@ class ChatWidgets {
                 child: Center(
                     child: Text(
                   name,
-                  style:
-                      TextStyle(height: 1.5, fontSize: 12, color: Colors.white),
+                  style: const TextStyle(
+                      height: 1.5, fontSize: 12, color: Colors.white),
                   overflow: TextOverflow.ellipsis,
                 )))
           ],
@@ -207,11 +192,11 @@ class ChatWidgets {
     return Row(
       children: [
         IconButton(
-          icon: Icon(Icons.attach_file),
+          icon: const Icon(Icons.attach_file),
           onPressed: () async {
-            final ImagePicker _picker = ImagePicker();
+            final ImagePicker picker = ImagePicker();
             final XFile? imageFile =
-                await _picker.pickImage(source: ImageSource.gallery);
+                await picker.pickImage(source: ImageSource.gallery);
             if (imageFile != null) {
               onSubmit(con, imageFile: File(imageFile.path));
             }
@@ -220,6 +205,7 @@ class ChatWidgets {
         Expanded(
           child: Container(
             margin: const EdgeInsets.all(5),
+            decoration: Styles.messageFieldCardStyle(),
             child: TextField(
               controller: con,
               onChanged: (value) async {
@@ -240,7 +226,6 @@ class ChatWidgets {
                 onSubmit(con);
               }),
             ),
-            decoration: Styles.messageFieldCardStyle(),
           ),
         ),
       ],
@@ -258,34 +243,36 @@ class ChatWidgets {
             child: Column(
               children: [
                 const CircleAvatar(
+                  radius: 60,
+                  backgroundColor: Colors.grey,
                   child: Icon(
                     Icons.person,
                     size: 60,
                     color: Colors.white,
                   ),
-                  radius: 60,
-                  backgroundColor: Colors.grey,
                 ),
                 const SizedBox(height: 10),
                 const Divider(
                   color: Colors.white,
                 ),
                 ListTile(
-                  leading: Icon(Icons.person),
-                  title: Text('Profile'),
+                  leading: const Icon(Icons.person),
+                  title: const Text('Profile'),
                   onTap: () {
                     Navigator.push(
                         context,
                         MaterialPageRoute(
-                            builder: (context) => UserProfileScreen()));
+                            builder: (context) => const UserProfileScreen()));
                   },
                 ),
                 ListTile(
-                  leading: Icon(Icons.groups),
-                  title: Text('Groups'),
+                  leading: const Icon(Icons.groups),
+                  title: const Text('Groups'),
                   onTap: () {
-                    Navigator.push(context,
-                        MaterialPageRoute(builder: (context) => GroupsPage()));
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => const GroupsPage()));
                   },
                 ),
                 ListTile(
@@ -313,11 +300,11 @@ class ChatWidgets {
   static searchField({Function(String)? onChange}) {
     return Container(
       margin: const EdgeInsets.all(10),
+      decoration: Styles.messageFieldCardStyle(),
       child: TextField(
         onChanged: onChange,
         decoration: Styles.searchTextFieldStyle(),
       ),
-      decoration: Styles.messageFieldCardStyle(),
     );
   }
 }

@@ -83,7 +83,7 @@ class _ChatPageState extends State<ChatPage> {
                 bool isTyping = snapshot.data!['isTyping'] ?? false;
                 return Text(
                   isTyping ? "${widget.name} está escribiendo..." : "",
-                  style: TextStyle(fontSize: 12, color: Colors.white70),
+                  style: const TextStyle(fontSize: 12, color: Colors.white70),
                 );
               },
             ),
@@ -119,9 +119,8 @@ class _ChatPageState extends State<ChatPage> {
                       return !snapshot.hasData
                           ? Container()
                           : Text(
-                              'Last seen : ' +
-                                  DateFormat('hh:mm a').format(
-                                      snapshot.data!['date_time'].toDate()),
+                              'Last seen : ${DateFormat('hh:mm a').format(
+                                      snapshot.data!['date_time'].toDate())}',
                               style: Styles.h1().copyWith(
                                   fontSize: 12,
                                   fontWeight: FontWeight.normal,

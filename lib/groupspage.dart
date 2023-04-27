@@ -1,7 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:project/chatpage.dart';
 import 'package:intl/intl.dart';
 import 'package:project/creategrouppage.dart';
 import 'package:project/group_chat_page.dart';
@@ -59,7 +58,7 @@ class _GroupsPageState extends State<GroupsPage> {
           Expanded(
             child: Container(
               margin: const EdgeInsets.only(top: 10),
-              decoration: BoxDecoration(
+              decoration: const BoxDecoration(
                 color: Colors.white,
                 borderRadius: BorderRadius.vertical(
                   top: Radius.circular(30),
@@ -68,8 +67,8 @@ class _GroupsPageState extends State<GroupsPage> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Padding(
-                    padding: const EdgeInsets.symmetric(
+                  const Padding(
+                    padding: EdgeInsets.symmetric(
                         horizontal: 20, vertical: 20),
                     child: Text(
                       'Groups',
@@ -109,10 +108,10 @@ class _GroupsPageState extends State<GroupsPage> {
         onPressed: () {
           Navigator.push(
             context,
-            MaterialPageRoute(builder: (context) => CreateGroupPage()),
+            MaterialPageRoute(builder: (context) => const CreateGroupPage()),
           );
         },
-        child: Icon(Icons.group_add),
+        child: const Icon(Icons.group_add),
       ),
     );
   }

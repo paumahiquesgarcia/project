@@ -31,17 +31,17 @@ class _CreateGroupPageState extends State<CreateGroupPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Create Group'),
+        title: const Text('Create Group'),
       ),
       body: Column(
         children: [
           Padding(
-            padding: EdgeInsets.all(12.0),
+            padding: const EdgeInsets.all(12.0),
             child: TextField(
               onChanged: (value) {
                 groupName = value;
               },
-              decoration: InputDecoration(
+              decoration: const InputDecoration(
                 labelText: 'Group Name',
                 border: OutlineInputBorder(),
               ),
@@ -53,7 +53,7 @@ class _CreateGroupPageState extends State<CreateGroupPage> {
               stream: firestore.collection('Users').snapshots(),
               builder: (context, AsyncSnapshot<QuerySnapshot> snapshot) {
                 if (!snapshot.hasData) {
-                  return CircularProgressIndicator();
+                  return const CircularProgressIndicator();
                 }
                 return ListView.builder(
                   itemCount: snapshot.data!.docs.length,
@@ -81,7 +81,7 @@ class _CreateGroupPageState extends State<CreateGroupPage> {
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: saveGroup,
-        child: Icon(Icons.check),
+        child: const Icon(Icons.check),
       ),
     );
   }
