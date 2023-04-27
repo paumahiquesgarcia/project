@@ -67,7 +67,7 @@ class _ChatPageState extends State<ChatPage> {
         title: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text(widget.id),
+            Text(widget.name),
             StreamBuilder(
               stream: FirebaseFirestore.instance
                   .collection('Users')
@@ -119,8 +119,7 @@ class _ChatPageState extends State<ChatPage> {
                       return !snapshot.hasData
                           ? Container()
                           : Text(
-                              'Last seen : ${DateFormat('hh:mm a').format(
-                                      snapshot.data!['date_time'].toDate())}',
+                              'Last seen : ${DateFormat('hh:mm a').format(snapshot.data!['date_time'].toDate())}',
                               style: Styles.h1().copyWith(
                                   fontSize: 12,
                                   fontWeight: FontWeight.normal,

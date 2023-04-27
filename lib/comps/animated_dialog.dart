@@ -87,22 +87,22 @@ class _AnimatedDialogState extends State<AnimatedDialog> {
                                     itemBuilder: (context, i) {
                                       Timestamp time = data[i]['date_time'];
                                       return ChatWidgets.card(
-                                        title: data[i]['name'],
-                                        time: DateFormat('EEE hh:mm')
-                                            .format(time.toDate()),
-                                        onTap: () {
-                                          Navigator.of(context).push(
-                                            MaterialPageRoute(
-                                              builder: (context) {
-                                                return ChatPage(
-                                                  id: data[i].id.toString(),
-                                                  name: data[i]['name'],
-                                                );
-                                              },
-                                            ),
-                                          );
-                                        },
-                                      );
+                                          title: data[i]['name'],
+                                          time: DateFormat('EEE hh:mm')
+                                              .format(time.toDate()),
+                                          onTap: () {
+                                            Navigator.of(context).push(
+                                              MaterialPageRoute(
+                                                builder: (context) {
+                                                  return ChatPage(
+                                                    id: data[i].id.toString(),
+                                                    name: data[i]['name'],
+                                                  );
+                                                },
+                                              ),
+                                            );
+                                          },
+                                          imageUrl: data[i]["profile_picture"]);
                                     },
                                   );
                                 }),

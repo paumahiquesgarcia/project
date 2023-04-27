@@ -219,7 +219,8 @@ class _MyHomePageState extends State<MyHomePage> {
                                                         ),
                                                       );
                                                     },
-                                                  );
+                                                    imageUrl: snap.data[
+                                                        "profile_picture"]);
                                           });
                                     },
                                   );
