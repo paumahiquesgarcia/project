@@ -3,7 +3,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:project/comps/widgets.dart';
 import 'package:intl/intl.dart';
-import '../chatpage.dart';
+import '../paginas_chat/chatpage.dart';
 
 class AnimatedDialog extends StatefulWidget {
   final double height;

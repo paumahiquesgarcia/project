@@ -6,9 +6,9 @@ import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:project/comps/animated_dialog.dart';
 import 'package:project/comps/styles.dart';
-import 'package:project/profile_page.dart';
+import 'package:project/paginas/profile_page.dart';
 
-import '../groupspage.dart';
+import '../paginas/groupspage.dart';
 
 class ChatWidgets {
   static Widget card({title, time, subtitle, onTap, String imageUrl = ''}) {
