@@ -26,7 +26,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
           'email': _email,
           'date_time': DateTime.now(),
           'isTyping': false,
-          'profile_picture': null,
+          'profile_picture':
+              "https://firebasestorage.googleapis.com/v0/b/userdatabase030501.appspot.com/o/profile_pictures%2F5jFwNo0qciXXp4JampICzBlDQER2_profile_picture?alt=media&token=4bed3232-d8c1-4d3f-b48c-df5730ab0b7d",
         });
 
         Navigator.pushReplacement(

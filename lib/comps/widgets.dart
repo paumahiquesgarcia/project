@@ -96,84 +96,109 @@ class ChatWidgets {
     );
   }
 
+  static Widget messagesCardGroups(
+      bool check, String message, String time, String userId,
+      {String? imageUrl, required Map<String, String> userProfileImages}) {
+    return Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.end,
+        children: [
+          if (check) const Spacer(),
+          if (!check)
+            CircleAvatar(
+              backgroundImage: userProfileImages[userId] != null
+                  ? NetworkImage(userProfileImages[userId]!)
+                  : null,
+              radius: 20,
+            ),
+          ConstrainedBox(
+            constraints: const BoxConstraints(maxWidth: 250),
+            child: Container(
+              margin: const EdgeInsets.all(8),
+              padding: const EdgeInsets.all(10),
+              decoration: Styles.messagesCardStyle(check),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  if (imageUrl != null)
+                    Padding(
+                      padding: const EdgeInsets.only(bottom: 8.0),
+                      child: Image.network(imageUrl, fit: BoxFit.cover),
+                    ),
+                  Text(
+                    '$message\n\n$time',
+                    style:
+                        TextStyle(color: check ? Colors.white : Colors.black),
+                  ),
+                ],
+              ),
+            ),
+          ),
+          if (check)
+            CircleAvatar(
+              backgroundImage: userProfileImages[userId] != null
+                  ? NetworkImage(userProfileImages[userId]!)
+                  : null,
+              radius: 20,
+            ),
+          if (!check) const Spacer(),
+        ],
+      ),
+    );
+  }
+
   static Widget messagesCard(
       bool check, String message, String time, String userId,
-      {String? imageUrl}) {
-    return FutureBuilder<String>(
-      future: _fetchProfilePictureUrl(userId),
-      builder: (BuildContext context, AsyncSnapshot<String> snapshot) {
-        if (snapshot.connectionState == ConnectionState.done) {
-          if (snapshot.hasError) {
-            return Text('Error: ${snapshot.error}');
-          }
-
-          String imageUrlprofile = snapshot.data!;
-          return Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Row(
-              crossAxisAlignment: CrossAxisAlignment.end,
-              children: [
-                if (check) const Spacer(),
-                if (!check)
-                  CircleAvatar(
-                    backgroundColor: Colors.grey,
-                    radius: 10,
-                    backgroundImage:
-                        imageUrl != '' ? NetworkImage(imageUrlprofile) : null,
-                    child: imageUrl != ''
-                        ? null
-                        : const Icon(
-                            Icons.person,
-                            size: 13,
-                            color: Colors.white,
-                          ),
-                  ),
-                ConstrainedBox(
-                  constraints: const BoxConstraints(maxWidth: 250),
-                  child: Container(
-                    margin: const EdgeInsets.all(8),
-                    padding: const EdgeInsets.all(10),
-                    decoration: Styles.messagesCardStyle(check),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        if (imageUrl != null)
-                          Padding(
-                            padding: const EdgeInsets.only(bottom: 8.0),
-                            child: Image.network(imageUrl, fit: BoxFit.cover),
-                          ),
-                        Text(
-                          '$message\n\n$time',
-                          style: TextStyle(
-                              color: check ? Colors.white : Colors.black),
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-                if (check)
-                  CircleAvatar(
-                    backgroundColor: Colors.grey,
-                    radius: 10,
-                    backgroundImage:
-                        imageUrl != '' ? NetworkImage(imageUrlprofile) : null,
-                    child: imageUrl != ''
-                        ? null
-                        : const Icon(
-                            Icons.person,
-                            size: 13,
-                            color: Colors.white,
-                          ),
-                  ),
-                if (!check) const Spacer(),
-              ],
+      {String? imageUrl,
+      required String? currentUserProfileImageUrl,
+      required String? otherUserProfileImageUrl}) {
+    return Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.end,
+        children: [
+          if (check) const Spacer(),
+          if (!check)
+            CircleAvatar(
+              backgroundImage: otherUserProfileImageUrl != null
+                  ? NetworkImage(otherUserProfileImageUrl)
+                  : null,
+              radius: 20,
             ),
-          );
-        } else {
-          // Muestra un indicador de carga mientras se obtiene la información del usuario.
-          return CircularProgressIndicator();
-        }
-      },
+          ConstrainedBox(
+            constraints: const BoxConstraints(maxWidth: 250),
+            child: Container(
+              margin: const EdgeInsets.all(8),
+              padding: const EdgeInsets.all(10),
+              decoration: Styles.messagesCardStyle(check),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  if (imageUrl != null)
+                    Padding(
+                      padding: const EdgeInsets.only(bottom: 8.0),
+                      child: Image.network(imageUrl, fit: BoxFit.cover),
+                    ),
+                  Text(
+                    '$message\n\n$time',
+                    style:
+                        TextStyle(color: check ? Colors.white : Colors.black),
+                  ),
+                ],
+              ),
+            ),
+          ),
+          if (check)
+            CircleAvatar(
+              backgroundImage: currentUserProfileImageUrl != null
+                  ? NetworkImage(currentUserProfileImageUrl)
+                  : null,
+              radius: 20,
+            ),
+          if (!check) const Spacer(),
+        ],
+      ),
     );
   }
 

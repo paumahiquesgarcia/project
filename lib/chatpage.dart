@@ -19,7 +19,34 @@ class ChatPage extends StatefulWidget {
 }
 
 class _ChatPageState extends State<ChatPage> {
+  String? currentUserProfileImageUrl;
+  String? otherUserProfileImageUrl;
   var roomId;
+
+  Future<void> fetchProfileImages() async {
+    final currentUser = FirebaseAuth.instance.currentUser;
+    if (currentUser != null) {
+      final currentUserDoc = await FirebaseFirestore.instance
+          .collection('Users')
+          .doc(currentUser.uid)
+          .get();
+      final otherUserDoc = await FirebaseFirestore.instance
+          .collection('Users')
+          .doc(widget.id)
+          .get();
+
+      setState(() {
+        currentUserProfileImageUrl = currentUserDoc['profile_picture'];
+        otherUserProfileImageUrl = otherUserDoc['profile_picture'];
+      });
+    }
+  }
+
+  @override
+  void initState() {
+    fetchProfileImages();
+    super.initState();
+  }
 
   Future<String?> _uploadImage(File imageFile) async {
     String fileName = "${DateTime.now().millisecondsSinceEpoch}_message_image";
@@ -144,17 +171,21 @@ class _ChatPageState extends State<ChatPage> {
                                           reverse: true,
                                           itemBuilder: (context, i) {
                                             return ChatWidgets.messagesCard(
-                                              snap.data!.docs[i]['sent_by'] ==
-                                                  FirebaseAuth.instance
-                                                      .currentUser!.uid,
-                                              snap.data!.docs[i]['message'],
-                                              DateFormat('hh:mm a').format(snap
-                                                  .data!.docs[i]['datetime']
-                                                  .toDate()),
-                                              snap.data!.docs[i]['sent_by'],
-                                              imageUrl: snap.data!.docs[i]
-                                                  ['image_url'],
-                                            );
+                                                snap.data!.docs[i]['sent_by'] ==
+                                                    FirebaseAuth.instance
+                                                        .currentUser!.uid,
+                                                snap.data!.docs[i]['message'],
+                                                DateFormat('hh:mm a').format(
+                                                    snap.data!
+                                                        .docs[i]['datetime']
+                                                        .toDate()),
+                                                snap.data!.docs[i]['sent_by'],
+                                                imageUrl: snap.data!.docs[i]
+                                                    ['image_url'],
+                                                currentUserProfileImageUrl:
+                                                    currentUserProfileImageUrl,
+                                                otherUserProfileImageUrl:
+                                                    otherUserProfileImageUrl);
                                           },
                                         );
                                 });

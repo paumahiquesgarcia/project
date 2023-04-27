@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:project/homepage.dart';
 import 'register_screen.dart';
 
 class LoginScreen extends StatefulWidget {
@@ -17,12 +16,8 @@ class _LoginScreenState extends State<LoginScreen> {
     if (formState.validate()) {
       formState.save();
       try {
-        UserCredential userCredential = await FirebaseAuth.instance
+        FirebaseAuth.instance
             .signInWithEmailAndPassword(email: _email, password: _password);
-        Navigator.pushReplacement(
-          context,
-          MaterialPageRoute(builder: (context) => MyHomePage()),
-        );
       } catch (e) {
         print(e);
       }

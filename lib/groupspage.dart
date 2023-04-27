@@ -3,6 +3,8 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:project/chatpage.dart';
 import 'package:intl/intl.dart';
+import 'package:project/creategrouppage.dart';
+import 'package:project/group_chat_page.dart';
 
 import 'comps/widgets.dart';
 
@@ -31,9 +33,9 @@ class _GroupsPageState extends State<GroupsPage> {
             Navigator.of(context).push(
               MaterialPageRoute(
                 builder: (context) {
-                  return ChatPage(
-                    id: group.id,
-                    name: group['name'],
+                  return GroupChatPage(
+                    groupId: group.id,
+                    groupName: group['name'],
                   );
                 },
               ),
@@ -102,6 +104,15 @@ class _GroupsPageState extends State<GroupsPage> {
             ),
           ),
         ],
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => CreateGroupPage()),
+          );
+        },
+        child: Icon(Icons.group_add),
       ),
     );
   }

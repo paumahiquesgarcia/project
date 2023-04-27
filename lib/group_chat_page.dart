@@ -21,16 +21,31 @@ class GroupChatPage extends StatefulWidget {
 }
 
 class _GroupChatPageState extends State<GroupChatPage> {
-  Future<File?> _pickImage() async {
-    final picker = ImagePicker();
-    final pickedFile = await picker.pickImage(source: ImageSource.gallery);
+  Map<String, String> _userProfileImages = {};
 
-    if (pickedFile != null) {
-      return File(pickedFile.path);
-    } else {
-      print('No image selected.');
-      return null;
+  @override
+  void initState() {
+    super.initState();
+    getGroupUserProfileImages(widget.groupId).then((profileImages) {
+      setState(() {
+        _userProfileImages = profileImages;
+      });
+    });
+  }
+
+  Future<Map<String, String>> getGroupUserProfileImages(String groupId) async {
+    final firestore = FirebaseFirestore.instance;
+    final groupDoc = await firestore.collection('Groups').doc(groupId).get();
+    List<String> userIds = List<String>.from(groupDoc.data()!['members']);
+
+    Map<String, String> userProfileImages = {};
+    for (String userId in userIds) {
+      final userDoc = await firestore.collection('Users').doc(userId).get();
+      userProfileImages[userId] = userDoc.data()!['profile_picture'];
+      print(userProfileImages[userId]);
     }
+
+    return userProfileImages;
   }
 
   Future<String?> _uploadImage(File imageFile) async {
@@ -74,7 +89,7 @@ class _GroupChatPageState extends State<GroupChatPage> {
                         itemCount: snapshot.data!.docs.length,
                         reverse: true,
                         itemBuilder: (context, i) {
-                          return ChatWidgets.messagesCard(
+                          return ChatWidgets.messagesCardGroups(
                             snapshot.data!.docs[i]['sent_by'] ==
                                 FirebaseAuth.instance.currentUser!.uid,
                             snapshot.data!.docs[i]['message'],
@@ -82,6 +97,7 @@ class _GroupChatPageState extends State<GroupChatPage> {
                                 snapshot.data!.docs[i]['datetime'].toDate()),
                             snapshot.data!.docs[i]['sent_by'],
                             imageUrl: snapshot.data!.docs[i]['image_url'],
+                            userProfileImages: _userProfileImages,
                           );
                         },
                       );
