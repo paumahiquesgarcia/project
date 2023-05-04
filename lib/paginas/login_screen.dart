@@ -1,5 +1,7 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:onesignal_flutter/onesignal_flutter.dart';
 import 'register_screen.dart';
 
 class LoginScreen extends StatefulWidget {
@@ -13,13 +15,29 @@ class _LoginScreenState extends State<LoginScreen> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   late String _email, _password;
 
+  Future<void> updateOneSignalPlayerId(String userId) async {
+    String? playerId = await OneSignal.shared
+        .getDeviceState()
+        .then((deviceState) => deviceState?.userId);
+
+    if (playerId != null) {
+      await FirebaseFirestore.instance
+          .collection('Users')
+          .doc(userId)
+          .update({'playerId': playerId});
+    }
+  }
+
   Future<void> _login() async {
     final formState = _formKey.currentState!;
     if (formState.validate()) {
       formState.save();
       try {
-        FirebaseAuth.instance
+        UserCredential userCredential = await FirebaseAuth.instance
             .signInWithEmailAndPassword(email: _email, password: _password);
+
+        // Actualiza el Player ID de OneSignal en la base de datos después de iniciar sesión con éxito
+        updateOneSignalPlayerId(userCredential.user!.uid);
       } catch (e) {
         print(e);
       }
