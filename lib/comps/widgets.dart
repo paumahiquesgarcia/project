@@ -295,7 +295,7 @@ class ChatWidgets {
   static searchBar(
     bool open,
   ) {
-    return AnimatedDialog(
+    return Buscador(
       height: open ? 800 : 0,
       width: open ? 400 : 0,
     );

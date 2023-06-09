@@ -5,18 +5,18 @@ import 'package:project/comps/widgets.dart';
 import 'package:intl/intl.dart';
 import '../paginas_chat/chatpage.dart';
 
-class AnimatedDialog extends StatefulWidget {
+class Buscador extends StatefulWidget {
   final double height;
   final double width;
 
-  const AnimatedDialog({Key? key, required this.height, required this.width})
+  const Buscador({Key? key, required this.height, required this.width})
       : super(key: key);
 
   @override
-  State<AnimatedDialog> createState() => _AnimatedDialogState();
+  State<Buscador> createState() => _BuscadorState();
 }
 
-class _AnimatedDialogState extends State<AnimatedDialog> {
+class _BuscadorState extends State<Buscador> {
   final firestore = FirebaseFirestore.instance;
   final controller = TextEditingController();
   String search = '';
