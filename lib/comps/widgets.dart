@@ -232,7 +232,7 @@ class ChatWidgets {
     );
   }
 
-  static drawer(context) {
+  static drawer(context, {String imageUrl = ''}) {
     return Drawer(
       backgroundColor: Colors.indigo.shade400,
       child: SafeArea(
@@ -242,14 +242,18 @@ class ChatWidgets {
             data: ThemeData.dark(),
             child: Column(
               children: [
-                const CircleAvatar(
+                CircleAvatar(
                   radius: 60,
                   backgroundColor: Colors.grey,
-                  child: Icon(
-                    Icons.person,
-                    size: 60,
-                    color: Colors.white,
-                  ),
+                  backgroundImage:
+                      imageUrl.isNotEmpty ? NetworkImage(imageUrl) : null,
+                  child: imageUrl.isEmpty
+                      ? const Icon(
+                          Icons.person,
+                          size: 60,
+                          color: Colors.white,
+                        )
+                      : null,
                 ),
                 const SizedBox(height: 10),
                 const Divider(

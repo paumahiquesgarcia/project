@@ -14,10 +14,29 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
+  String imageprofile = "";
   @override
   void initState() {
     Functions.updateAvailability();
     super.initState();
+    fetchUserProfileImage();
+  }
+
+  Future<void> fetchUserProfileImage() async {
+    final currentUser = FirebaseAuth.instance.currentUser;
+    String? userProfileImageUrl;
+    if (currentUser != null) {
+      final userDoc = await FirebaseFirestore.instance
+          .collection('Users')
+          .doc(currentUser.uid)
+          .get();
+      setState(() {
+        userProfileImageUrl = userDoc['profile_picture'];
+      });
+    }
+    if (userProfileImageUrl!.isNotEmpty) {
+      imageprofile = userProfileImageUrl!;
+    }
   }
 
   final firestore = FirebaseFirestore.instance;
@@ -47,7 +66,7 @@ class _MyHomePageState extends State<MyHomePage> {
           )
         ],
       ),
-      drawer: ChatWidgets.drawer(context),
+      drawer: ChatWidgets.drawer(context, imageUrl: imageprofile),
       body: SafeArea(
         child: Stack(
           alignment: AlignmentDirectional.topEnd,
