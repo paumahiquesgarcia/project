@@ -1,5 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:page_transition/page_transition.dart';
+import 'package:project/paginas/groupspage.dart';
 
 class CreateGroupPage extends StatefulWidget {
   const CreateGroupPage({Key? key}) : super(key: key);
@@ -23,8 +25,12 @@ class _CreateGroupPageState extends State<CreateGroupPage> {
       'last_message': '',
       'last_message_time': DateTime.now(),
     });
-
-    Navigator.pop(context);
+    if (context.mounted) {
+      Navigator.push(
+          context,
+          PageTransition(
+              type: PageTransitionType.rightToLeft, child: const GroupsPage()));
+    }
   }
 
   @override

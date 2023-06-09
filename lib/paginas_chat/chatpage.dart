@@ -2,11 +2,14 @@ import 'dart:io';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:http/http.dart' as http;
 import 'package:firebase_storage/firebase_storage.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:project/comps/styles.dart';
 import 'package:project/comps/widgets.dart';
 import 'package:intl/intl.dart';
+import 'dart:convert';
 
 class ChatPage extends StatefulWidget {
   final String id;
@@ -46,6 +49,39 @@ class _ChatPageState extends State<ChatPage> {
   void initState() {
     fetchProfileImages();
     super.initState();
+  }
+
+  Future<void> sendNotification(String message, String recipientId) async {
+    const String onesignalAppId = '4cfb71c8-b361-4850-9d5c-35b258ecb176';
+    const String onesignalApiKey =
+        'ZTI2MzcxYmYtY2IyOS00NDJmLTljMDYtYjk3N2YzNTgyZjQ5';
+
+    // Obtén el playerId del destinatario desde Firestore
+    final recipientDoc = await FirebaseFirestore.instance
+        .collection('Users')
+        .doc(recipientId)
+        .get();
+    String recipientPlayerId = recipientDoc['playerId'];
+
+    String name = recipientDoc['name'];
+
+    final response = await http.post(
+      Uri.parse('https://onesignal.com/api/v1/notifications'),
+      headers: {
+        'Content-Type': 'application/json; charset=utf-8',
+        'Authorization': 'Basic $onesignalApiKey',
+      },
+      body: json.encode({
+        'app_id': onesignalAppId,
+        'include_player_ids': [recipientPlayerId],
+        'headings': {'en': 'Nuevo mensaje de $name'},
+        'contents': {'en': message},
+      }),
+    );
+
+    if (response.statusCode != 200) {
+      throw Exception('Error al enviar la notificación: ${response.body}');
+    }
   }
 
   Future<String?> _uploadImage(File imageFile) async {
@@ -215,6 +251,8 @@ class _ChatPageState extends State<ChatPage> {
                   if (imageFile != null) {
                     imageUrl = await _uploadImage(imageFile);
                   }
+
+                  await sendNotification(controller.text.trim(), widget.id);
 
                   Map<String, dynamic> data = {
                     'message': controller.text.trim(),

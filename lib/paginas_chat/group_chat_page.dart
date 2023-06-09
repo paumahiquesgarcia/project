@@ -3,8 +3,8 @@ import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:onesignal_flutter/onesignal_flutter.dart';
 import 'package:project/comps/styles.dart';
 import 'package:project/comps/widgets.dart';
 import 'package:intl/intl.dart';
@@ -46,13 +46,15 @@ class _GroupChatPageState extends State<GroupChatPage> {
 
     for (String userId in userIds) {
       if (userId != FirebaseAuth.instance.currentUser!.uid) {
-        print(userId);
+        if (kDebugMode) {
+          print(userId);
+        }
         final userDoc = await firestore.collection('Users').doc(userId).get();
         playerIds.add(userDoc.data()!['playerId']);
       }
     }
 
-    final response = await http.post(
+    await http.post(
       Uri.parse('https://onesignal.com/api/v1/notifications'),
       headers: {
         'Content-Type': 'application/json; charset=utf-8',
@@ -69,33 +71,6 @@ class _GroupChatPageState extends State<GroupChatPage> {
     );
   }
 
-  Future<void> sendNotification2(
-      List<String> playerIds, String groupName, String message) async {
-    const String onesignalAppId = '4cfb71c8-b361-4850-9d5c-35b258ecb176';
-    const String onesignalApiKey =
-        'ZTI2MzcxYmYtY2IyOS00NDJmLTljMDYtYjk3N2YzNTgyZjQ5';
-
-    final response = await http.post(
-      Uri.parse('https://onesignal.com/api/v1/notifications'),
-      headers: {
-        'Content-Type': 'application/json; charset=utf-8',
-        'Authorization': 'Basic $onesignalApiKey',
-      },
-      body: json.encode({
-        'app_id': onesignalAppId,
-        'include_player_ids': playerIds,
-        'headings': {'en': 'Nuevo mensaje en "$groupName"'},
-        'contents': {'en': message},
-        'android_group': groupName,
-        'thread_id': groupName,
-      }),
-    );
-
-    if (response.statusCode != 200) {
-      throw Exception('Error al enviar la notificación: ${response.body}');
-    }
-  }
-
   Future<Map<String, String>> getGroupUserProfileImages(String groupId) async {
     final firestore = FirebaseFirestore.instance;
     final groupDoc = await firestore.collection('Groups').doc(groupId).get();
@@ -105,7 +80,6 @@ class _GroupChatPageState extends State<GroupChatPage> {
     for (String userId in userIds) {
       final userDoc = await firestore.collection('Users').doc(userId).get();
       userProfileImages[userId] = userDoc.data()!['profile_picture'];
-      print(userProfileImages[userId]);
     }
 
     return userProfileImages;

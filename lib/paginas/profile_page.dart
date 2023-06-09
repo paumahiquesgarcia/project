@@ -1,5 +1,6 @@
 import 'dart:io';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
@@ -12,7 +13,7 @@ class UserProfileScreen extends StatefulWidget {
   });
 
   @override
-  _UserProfileScreenState createState() => _UserProfileScreenState();
+  State<UserProfileScreen> createState() => _UserProfileScreenState();
 }
 
 class _UserProfileScreenState extends State<UserProfileScreen> {
@@ -28,7 +29,9 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
       if (pickedFile != null) {
         _imageFile = File(pickedFile.path);
       } else {
-        print('No image selected.');
+        if (kDebugMode) {
+          print('No image selected.');
+        }
       }
     });
   }
@@ -53,11 +56,7 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
       updatedData['profile_picture'] = newImageUrl;
     }
 
-    return users
-        .doc(firebase.currentUser!.uid)
-        .update(updatedData)
-        .then((value) => print('Profile Updated'))
-        .catchError((error) => print('Failed to update user: $error'));
+    return users.doc(firebase.currentUser!.uid).update(updatedData);
   }
 
   @override
@@ -112,11 +111,13 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
                         String newName = _nameController.text.trim();
                         String? newImageUrl = await _uploadImage();
                         await _updateProfileData(newName, newImageUrl);
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          const SnackBar(
-                            content: Text('Perfil actualizado con éxito.'),
-                          ),
-                        );
+                        if (context.mounted) {
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            const SnackBar(
+                              content: Text('Perfil actualizado con éxito.'),
+                            ),
+                          );
+                        }
                       },
                       child: const Text('Actualizar perfil'),
                     ),
