@@ -24,7 +24,7 @@ dependencies:
   material_text_fields: ^1.0.3
   flutter_sound: ^9.2.13
   path_provider: ^2.0.15
-  permission_handler: ^10.2.0
+  permission_handler: ^10.3.0
 
 dev_dependencies:
   flutter_test:

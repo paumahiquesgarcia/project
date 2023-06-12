@@ -2,6 +2,8 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:material_text_fields/material_text_fields.dart';
+import 'package:material_text_fields/theme/material_text_field_theme.dart';
 import 'login_screen.dart';
 
 class RegisterScreen extends StatefulWidget {
@@ -49,71 +51,116 @@ class _RegisterScreenState extends State<RegisterScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('Register'),
-      ),
-      body: Form(
-        key: _formKey,
-        child: SingleChildScrollView(
-          padding: const EdgeInsets.all(16),
-          child: Column(
-            children: [
-              TextFormField(
-                decoration: const InputDecoration(labelText: 'Name'),
-                validator: (String? value) {
-                  if (value!.isEmpty) {
-                    return 'Please enter your name';
-                  }
-                  return null;
-                },
-                onSaved: (String? value) {
-                  _name = value!;
-                },
+    double screenHeight = MediaQuery.of(context).size.height;
+    return GestureDetector(
+        onTap: () {
+          FocusScope.of(context).unfocus();
+        },
+        child: Scaffold(
+          body: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 16),
+            child: Form(
+              key: _formKey,
+              child: ListView(
+                children: [
+                  SizedBox(height: screenHeight * .12),
+                  const Text(
+                    'Registro',
+                    style: TextStyle(
+                        shadows: [Shadow(color: Colors.black, blurRadius: 10)],
+                        fontSize: 28,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.white),
+                  ),
+                  SizedBox(height: screenHeight * .05),
+                  MaterialTextField(
+                    keyboardType: TextInputType.name,
+                    hint: 'Name',
+                    theme: FilledOrOutlinedTextTheme(
+                      enabledColor: Colors.grey,
+                      focusedColor: Colors.blue,
+                      fillColor: Colors.white70,
+                      // You can use all properties of FilledOrOutlinedTextTheme
+                      // to decor text field
+                    ),
+                    textInputAction: TextInputAction.next,
+                    prefixIcon: const Icon(Icons.person_outline),
+                    validator: (String? value) {
+                      if (value!.isEmpty) {
+                        return 'Please enter your email';
+                      }
+                      return null;
+                    },
+                    onChanged: (String? value) {
+                      _name = value!;
+                    },
+                  ),
+                  SizedBox(height: screenHeight * .01),
+                  MaterialTextField(
+                    keyboardType: TextInputType.emailAddress,
+                    hint: 'Email',
+                    theme: FilledOrOutlinedTextTheme(
+                      enabledColor: Colors.grey,
+                      focusedColor: Colors.blue,
+                      fillColor: Colors.white70,
+                      // You can use all properties of FilledOrOutlinedTextTheme
+                      // to decor text field
+                    ),
+                    textInputAction: TextInputAction.next,
+                    prefixIcon: const Icon(Icons.email_outlined),
+                    validator: (String? value) {
+                      if (value!.isEmpty) {
+                        return 'Please enter your email';
+                      }
+                      return null;
+                    },
+                    onChanged: (String? value) {
+                      _email = value!;
+                    },
+                  ),
+                  SizedBox(height: screenHeight * .01),
+                  MaterialTextField(
+                    keyboardType: TextInputType.visiblePassword,
+                    hint: 'Password',
+                    obscureText: true,
+                    theme: FilledOrOutlinedTextTheme(
+                      enabledColor: Colors.grey,
+                      focusedColor: Colors.blue,
+                      fillColor: Colors.white70,
+                      // You can use all properties of FilledOrOutlinedTextTheme
+                      // to decor text field
+                    ),
+                    textInputAction: TextInputAction.next,
+                    prefixIcon: const Icon(Icons.lock_outlined),
+                    validator: (String? value) {
+                      if (value!.isEmpty) {
+                        return 'Please enter your email';
+                      }
+                      return null;
+                    },
+                    onChanged: (String? value) {
+                      _password = value!;
+                    },
+                  ),
+                  SizedBox(height: screenHeight * .02),
+                  const SizedBox(height: 16),
+                  ElevatedButton(
+                    onPressed: _register,
+                    child: const Text('Register'),
+                  ),
+                  const SizedBox(height: 16),
+                  TextButton(
+                    onPressed: () {
+                      Navigator.pop(
+                        context,
+                      );
+                    },
+                    child: const Text('Already have an account? Login'),
+                  ),
+                ],
               ),
-              TextFormField(
-                decoration: const InputDecoration(labelText: 'Email'),
-                validator: (String? value) {
-                  if (value!.isEmpty) {
-                    return 'Please enter your email';
-                  }
-                  return null;
-                },
-                onSaved: (String? value) {
-                  _email = value!;
-                },
-              ),
-              TextFormField(
-                decoration: const InputDecoration(labelText: 'Password'),
-                obscureText: true,
-                validator: (String? value) {
-                  if (value!.isEmpty) {
-                    return 'Please enter your password';
-                  }
-                  return null;
-                },
-                onSaved: (String? value) {
-                  _password = value!;
-                },
-              ),
-              const SizedBox(height: 16),
-              ElevatedButton(
-                onPressed: _register,
-                child: const Text('Register'),
-              ),
-              const SizedBox(height: 16),
-              TextButton(
-                onPressed: () {
-                  Navigator.pop(
-                    context,
-                  );
-                },
-                child: const Text('Already have an account? Login'),
-              ),
-            ],
+            ),
           ),
-        ),
-      ),
-    );
+        ));
   }
 }

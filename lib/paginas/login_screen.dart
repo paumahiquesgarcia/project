@@ -65,13 +65,14 @@ class _LoginScreenState extends State<LoginScreen> {
               children: [
                 SizedBox(height: screenHeight * .12),
                 const Text(
-                  'Empezemos,',
+                  'Empezemos',
                   style: TextStyle(
                       shadows: [Shadow(color: Colors.black, blurRadius: 10)],
                       fontSize: 28,
                       fontWeight: FontWeight.bold,
                       color: Colors.white),
                 ),
+                SizedBox(height: screenHeight * .05),
                 MaterialTextField(
                   keyboardType: TextInputType.emailAddress,
                   hint: 'Email',
@@ -94,6 +95,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     _email = value!;
                   },
                 ),
+                SizedBox(height: screenHeight * .01),
                 MaterialTextField(
                   keyboardType: TextInputType.emailAddress,
                   hint: 'Password',

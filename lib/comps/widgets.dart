@@ -4,6 +4,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:permission_handler/permission_handler.dart';
 import 'package:project/comps/animated_dialog.dart';
 import 'package:project/comps/styles.dart';
 import 'package:project/paginas/profile_page.dart';
@@ -194,6 +195,7 @@ class ChatWidgets {
         IconButton(
           icon: const Icon(Icons.attach_file),
           onPressed: () async {
+            await Permission.storage.request();
             final ImagePicker picker = ImagePicker();
             final XFile? imageFile =
                 await picker.pickImage(source: ImageSource.gallery);
