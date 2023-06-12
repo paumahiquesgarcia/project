@@ -32,7 +32,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
           'date_time': DateTime.now(),
           'isTyping': false,
           'profile_picture':
-              "https://firebasestorage.googleapis.com/v0/b/userdatabase030501.appspot.com/o/profile_pictures%2F5jFwNo0qciXXp4JampICzBlDQER2_profile_picture?alt=media&token=4bed3232-d8c1-4d3f-b48c-df5730ab0b7d",
+              "https://firebasestorage.googleapis.com/v0/b/userdatabase030501.appspot.com/o/%E2%80%94Pngtree%E2%80%94outline%20user%20icon_5045523.png?alt=media&token=5d7525b6-d49f-4969-9094-2b400e3730f6&_gl=1*14cxpdx*_ga*NzA2MDcxOTQ5LjE2ODYyNDQ2ODg.*_ga_CW55HF8NVT*MTY4NjUzMDg1Ny44LjEuMTY4NjUzMTAzNi4wLjAuMA..",
         });
 
         if (context.mounted) {

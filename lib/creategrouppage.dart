@@ -21,7 +21,7 @@ class _CreateGroupPageState extends State<CreateGroupPage> {
       'name': groupName,
       'members': selectedMembers,
       'group_picture':
-          'https://firebasestorage.googleapis.com/v0/b/userdatabase030501.appspot.com/o/profile_pictures%2F5jFwNo0qciXXp4JampICzBlDQER2_profile_picture?alt=media&token=4bed3232-d8c1-4d3f-b48c-df5730ab0b7d', // Puedes proporcionar una URL de imagen predeterminada o dejarla vacía
+          'https://firebasestorage.googleapis.com/v0/b/userdatabase030501.appspot.com/o/group.png?alt=media&token=bd0300bc-100a-4dd5-b236-1675090f1158&_gl=1*pmwgbt*_ga*NzA2MDcxOTQ5LjE2ODYyNDQ2ODg.*_ga_CW55HF8NVT*MTY4NjUzMDg1Ny44LjEuMTY4NjUzMDg3Mi4wLjAuMA..', // Puedes proporcionar una URL de imagen predeterminada o dejarla vacía
       'last_message': '',
       'last_message_time': DateTime.now(),
     });
